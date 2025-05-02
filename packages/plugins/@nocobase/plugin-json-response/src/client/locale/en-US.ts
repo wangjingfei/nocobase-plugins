@@ -1,0 +1,22 @@
+export default {
+  'JSON响应解析配置': 'JSON Response Parser Configuration',
+  '响应数据': 'Response Data',
+  '上游HTTP请求节点的响应数据字段名，默认为 "data"': 'Response data field name from upstream HTTP request node, default is "data"',
+  '默认为 "data"': 'Default is "data"',
+  '解析模式': 'Parse Mode',
+  '选择如何解析JSON数据': 'Choose how to parse JSON data',
+  '路径表达式': 'Path Expression',
+  '使用JSONPath语法从响应数据中提取特定值，例如 "$.data.items[0].id"': 'Use JSONPath syntax to extract specific values from response data, e.g. "$.data.items[0].id"',
+  '例如: $.data.items[0].id': 'Example: $.data.items[0].id',
+  '输出字段': 'Output Field',
+  '解析结果将存储在此变量中，供下游节点使用': 'Parsing result will be stored in this variable for downstream nodes to use',
+  '例如: parsedData': 'Example: parsedData',
+  '默认值': 'Default Value',
+  '当解析结果为空时使用的默认值': 'Default value to use when parsing result is empty',
+  '可选': 'Optional',
+  '忽略错误': 'Ignore Errors',
+  '如果启用，即使解析出错，工作流也将继续执行': 'If enabled, the workflow will continue execution even if parsing fails',
+  'JSONPath解析工具': 'JSONPath Parser Tool',
+  'JSON响应处理': 'JSON Response Processing',
+  '处理HTTP请求返回的JSON数据并解析为下游可用的变量': 'Process JSON data returned from HTTP requests and parse it into variables available for downstream nodes'
+}; 

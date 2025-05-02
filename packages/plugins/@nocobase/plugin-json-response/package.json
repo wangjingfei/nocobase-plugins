@@ -1,0 +1,27 @@
+{
+  "name": "@nocobase/plugin-json-response",
+  "version": "0.1.0",
+  "description": "Plugin for processing JSON response data from HTTP requests in NocoBase workflow",
+  "license": "AGPL-3.0",
+  "main": "./lib/server/index.js",
+  "files": [
+    "lib",
+    "src",
+    "README.md",
+    "README.zh-CN.md"
+  ],
+  "dependencies": {
+    "jsonpath": "^1.1.1"
+  },
+  "devDependencies": {
+    "@nocobase/client": "0.x",
+    "@nocobase/server": "0.x",
+    "@nocobase/test": "0.x",
+    "@types/jsonpath": "^0.2.2"
+  },
+  "peerDependencies": {
+    "@nocobase/client": "0.x",
+    "@nocobase/server": "0.x",
+    "@nocobase/plugin-workflow": "0.x"
+  }
+} 
