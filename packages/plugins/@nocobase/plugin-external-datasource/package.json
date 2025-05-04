@@ -1,0 +1,30 @@
+{
+  "name": "@nocobase/plugin-external-datasource",
+  "version": "0.1.0",
+  "description": "Plugin for connecting external data sources like MySQL, PostgreSQL in NocoBase",
+  "license": "AGPL-3.0",
+  "main": "./lib/server/index.js",
+  "files": [
+    "lib",
+    "src",
+    "README.md",
+    "README.zh-CN.md"
+  ],
+  "dependencies": {
+    "mysql2": "^2.3.3",
+    "pg": "^8.11.0",
+    "sequelize": "^6.32.0",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "@nocobase/client": "0.x",
+    "@nocobase/server": "0.x",
+    "@nocobase/test": "0.x",
+    "@types/mysql": "^2.15.21",
+    "@types/pg": "^8.6.6"
+  },
+  "peerDependencies": {
+    "@nocobase/client": "0.x",
+    "@nocobase/server": "0.x"
+  }
+} 
