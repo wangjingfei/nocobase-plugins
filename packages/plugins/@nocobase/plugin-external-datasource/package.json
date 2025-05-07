@@ -26,5 +26,8 @@
   "peerDependencies": {
     "@nocobase/client": "1.6.25",
     "@nocobase/server": "1.6.25"
+  },
+  "scripts": {
+    "build": "tsc"
   }
 } 
