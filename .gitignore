@@ -1,0 +1,25 @@
+# Node
+node_modules/
+
+# Build output
+lib/
+dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env
+.env.*
+
+# Mac系统文件
+.DS_Store
+
+# IDE配置
+.idea/
+.vscode/ 
+
+# npm lock file
+package-lock.json 

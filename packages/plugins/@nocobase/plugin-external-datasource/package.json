@@ -17,14 +17,14 @@
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
-    "@nocobase/client": "0.x",
-    "@nocobase/server": "0.x",
-    "@nocobase/test": "0.x",
+    "@nocobase/client": "1.7.0-beta.29",
+    "@nocobase/server": "1.7.0-beta.29",
+    "@nocobase/test": "1.7.0-beta.29",
     "@types/mysql": "^2.15.21",
     "@types/pg": "^8.6.6"
   },
   "peerDependencies": {
-    "@nocobase/client": "0.x",
-    "@nocobase/server": "0.x"
+    "@nocobase/client": "1.7.0-beta.29",
+    "@nocobase/server": "1.7.0-beta.29"
   }
 } 
