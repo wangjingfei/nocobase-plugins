@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Space, message, Modal, Card, Tabs, Tag } from 'antd';
-import { DatabaseOutlined, CloudServerOutlined, PlusOutlined, EditOutlined, DeleteOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { Table, Button, Space, message, Modal, Card, Tag, Dropdown } from 'antd';
+import { DatabaseOutlined, CloudServerOutlined, PlusOutlined, EditOutlined, DeleteOutlined, PlayCircleOutlined, DownOutlined } from '@ant-design/icons';
 import { useAPIClient } from '@nocobase/client';
 import { MySQLConfigForm } from './forms/MySQLConfigForm';
 import { PostgreSQLConfigForm } from './forms/PostgreSQLConfigForm';
 import { RestAPIConfigForm } from './forms/RestAPIConfigForm';
-
-const { TabPane } = Tabs;
 
 export const ExternalDataSourceManager: React.FC = () => {
   const api = useAPIClient();
@@ -25,6 +23,7 @@ export const ExternalDataSourceManager: React.FC = () => {
       });
       setDataSources(response.data || []);
     } catch (error) {
+      console.error('加载数据源失败:', error);
       message.error('加载数据源失败');
     } finally {
       setLoading(false);
@@ -93,11 +92,11 @@ export const ExternalDataSourceManager: React.FC = () => {
   const getTypeLabel = (type: string) => {
     switch (type) {
       case 'mysql-external':
-        return <Tag color="blue">MySQL</Tag>;
+        return <Tag color="blue">MySQL 外部数据库</Tag>;
       case 'postgresql-external':
-        return <Tag color="purple">PostgreSQL</Tag>;
+        return <Tag color="purple">PostgreSQL 外部数据库</Tag>;
       case 'rest-api-external':
-        return <Tag color="green">REST API</Tag>;
+        return <Tag color="green">REST API 数据源</Tag>;
       default:
         return <Tag>{type}</Tag>;
     }
@@ -134,6 +133,40 @@ export const ExternalDataSourceManager: React.FC = () => {
     }
   };
 
+  // 添加数据源下拉菜单项
+  const addDataSourceMenuItems = [
+    {
+      key: 'mysql-external',
+      label: (
+        <Space>
+          <DatabaseOutlined style={{ color: '#1890ff' }} />
+          MySQL 外部数据库
+        </Space>
+      ),
+      onClick: () => handleAdd('mysql-external'),
+    },
+    {
+      key: 'postgresql-external',
+      label: (
+        <Space>
+          <DatabaseOutlined style={{ color: '#722ed1' }} />
+          PostgreSQL 外部数据库
+        </Space>
+      ),
+      onClick: () => handleAdd('postgresql-external'),
+    },
+    {
+      key: 'rest-api-external',
+      label: (
+        <Space>
+          <CloudServerOutlined style={{ color: '#52c41a' }} />
+          REST API 数据源
+        </Space>
+      ),
+      onClick: () => handleAdd('rest-api-external'),
+    },
+  ];
+
   const columns = [
     {
       title: '名称',
@@ -142,7 +175,7 @@ export const ExternalDataSourceManager: React.FC = () => {
       render: (text: string, record: any) => (
         <Space>
           {getTypeIcon(record.type)}
-          {text}
+          <span style={{ fontWeight: 500 }}>{text}</span>
         </Space>
       ),
     },
@@ -157,7 +190,7 @@ export const ExternalDataSourceManager: React.FC = () => {
       dataIndex: 'enabled',
       key: 'enabled',
       render: (enabled: boolean) => (
-        <Tag color={enabled ? 'green' : 'red'}>
+        <Tag color={enabled ? 'success' : 'error'}>
           {enabled ? '已启用' : '已禁用'}
         </Tag>
       ),
@@ -166,15 +199,17 @@ export const ExternalDataSourceManager: React.FC = () => {
       title: '最后同步时间',
       dataIndex: 'lastSyncTime',
       key: 'lastSyncTime',
-      render: (time: string) => time ? new Date(time).toLocaleString() : '从未同步',
+      render: (time: string) => time ? new Date(time).toLocaleString() : '-',
     },
     {
       title: '操作',
       key: 'actions',
+      width: 200,
       render: (_, record: any) => (
         <Space>
           <Button 
             type="link" 
+            size="small"
             icon={<EditOutlined />} 
             onClick={() => handleEdit(record)}
           >
@@ -182,6 +217,7 @@ export const ExternalDataSourceManager: React.FC = () => {
           </Button>
           <Button 
             type="link" 
+            size="small"
             icon={<PlayCircleOutlined />} 
             onClick={() => handleSync(record.id)}
           >
@@ -190,6 +226,7 @@ export const ExternalDataSourceManager: React.FC = () => {
           <Button 
             type="link" 
             danger 
+            size="small"
             icon={<DeleteOutlined />} 
             onClick={() => handleDelete(record.id)}
           >
@@ -201,34 +238,27 @@ export const ExternalDataSourceManager: React.FC = () => {
   ];
 
   return (
-    <div>
-      <Card style={{ marginBottom: 16 }}>
-        <h2>外部数据源管理</h2>
-      </Card>
-      
+    <div style={{ padding: '24px' }}>
+      <div style={{ marginBottom: 24 }}>
+        <h1 style={{ fontSize: '24px', fontWeight: 500, margin: 0 }}>外部数据源</h1>
+        <p style={{ color: '#666', marginTop: 8, marginBottom: 0 }}>
+          管理外部数据库和API连接，支持数据同步和实时访问
+        </p>
+      </div>
+
       <Card>
-        <div style={{ marginBottom: 16 }}>
-          <Space>
-            <Button 
-              type="primary" 
-              icon={<PlusOutlined />} 
-              onClick={() => handleAdd('mysql-external')}
-            >
-              添加 MySQL 数据库
+        <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h3 style={{ margin: 0 }}>数据源列表</h3>
+          </div>
+          <Dropdown 
+            menu={{ items: addDataSourceMenuItems }}
+            placement="bottomRight"
+          >
+            <Button type="primary" icon={<PlusOutlined />}>
+              添加数据源 <DownOutlined />
             </Button>
-            <Button 
-              icon={<PlusOutlined />} 
-              onClick={() => handleAdd('postgresql-external')}
-            >
-              添加 PostgreSQL 数据库
-            </Button>
-            <Button 
-              icon={<PlusOutlined />} 
-              onClick={() => handleAdd('rest-api-external')}
-            >
-              添加 REST API
-            </Button>
-          </Space>
+          </Dropdown>
         </div>
 
         <Table
@@ -239,21 +269,27 @@ export const ExternalDataSourceManager: React.FC = () => {
           pagination={{
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total) => `共 ${total} 条记录`,
+            showTotal: (total, range) => `第 ${range[0]}-${range[1]} 条，共 ${total} 条记录`,
+            pageSize: 10,
+            showLessItems: true,
+          }}
+          locale={{
+            emptyText: '暂无数据源，请点击上方"添加数据源"按钮开始配置',
           }}
         />
       </Card>
 
       <Modal
         title={`${currentDataSource ? '编辑' : '添加'}${
-          modalType === 'mysql-external' ? 'MySQL 数据库' :
-          modalType === 'postgresql-external' ? 'PostgreSQL 数据库' :
+          modalType === 'mysql-external' ? 'MySQL 外部数据库' :
+          modalType === 'postgresql-external' ? 'PostgreSQL 外部数据库' :
           'REST API 数据源'
         }`}
         open={modalVisible}
         footer={null}
         width={600}
         onCancel={() => setModalVisible(false)}
+        destroyOnClose
       >
         {getConfigForm()}
       </Modal>
