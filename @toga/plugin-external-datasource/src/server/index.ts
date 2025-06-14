@@ -7,7 +7,7 @@ export class ExternalDataSourcePlugin extends Plugin {
   syncManager: SyncManager;
 
   getName(): string {
-    return 'external-datasource';
+    return '@toga/plugin-external-datasource';
   }
 
   async afterAdd() {}
@@ -60,6 +60,43 @@ export class ExternalDataSourcePlugin extends Plugin {
           type: 'boolean',
           name: 'enabled',
           defaultValue: true,
+        },
+        {
+          type: 'date',
+          name: 'lastSyncTime',
+        },
+      ],
+    });
+
+    // 定义同步任务配置的 collection
+    this.db.collection({
+      name: 'syncTasks',
+      fields: [
+        {
+          type: 'string',
+          name: 'id',
+          primaryKey: true,
+        },
+        {
+          type: 'string',
+          name: 'name',
+        },
+        {
+          type: 'string',
+          name: 'dataSourceId',
+        },
+        {
+          type: 'json',
+          name: 'config',
+        },
+        {
+          type: 'string',
+          name: 'status',
+          defaultValue: 'idle',
+        },
+        {
+          type: 'string',
+          name: 'schedule',
         },
         {
           type: 'date',

@@ -14,7 +14,7 @@
 2. 执行以下命令克隆插件到正确位置：
 
 ```bash
-git clone https://github.com/your-username/plugin-json-response.git packages/plugins/@nocobase/plugin-json-response
+git clone https://github.com/wangjingfei/nocobase-plugins.git packages/plugins
 ```
 
 3. 安装依赖：
@@ -40,7 +40,7 @@ yarn nocobase build plugin-json-response
 1. 进入NocoBase管理界面
 2. 导航到"设置" > "插件管理"
 3. 点击"添加插件"按钮
-4. 输入插件包名：`@nocobase/plugin-json-response`
+4. 输入插件包名：`@toga/plugin-json-response`
 5. 点击"安装"按钮
 6. 安装完成后，启用该插件
 
@@ -49,8 +49,8 @@ yarn nocobase build plugin-json-response
 1. 下载插件包并解压到正确位置：
 
 ```bash
-mkdir -p /path/to/nocobase/storage/plugins/@nocobase/plugin-json-response
-tar -xvzf plugin-json-response.tgz -C /path/to/nocobase/storage/plugins/@nocobase/plugin-json-response --strip-components=1
+mkdir -p /path/to/nocobase/storage/plugins/@toga/plugin-json-response
+tar -xvzf plugin-json-response.tgz -C /path/to/nocobase/storage/plugins/@toga/plugin-json-response --strip-components=1
 ```
 
 2. 重启NocoBase服务：

@@ -16,7 +16,7 @@
 
 1. 在NocoBase应用中导航到插件管理页面
 2. 点击"添加与更新"按钮
-3. 安装"@nocobase/plugin-json-response"插件
+3. 安装"@toga/plugin-json-response"插件
 4. 启用插件
 
 ### 工作流节点配置

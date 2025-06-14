@@ -1,5 +1,5 @@
 {
-  "name": "plugin-external-datasource",
+  "name": "@toga/plugin-external-datasource",
   "version": "0.1.0",
   "main": "dist/server/index.js",
   "displayName": "External Data Source",

@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { css } from '@emotion/css';
 import { Select, Input, Checkbox, Form, Card, Radio } from 'antd';
 import { useForm } from '@formily/react';
-import { useWorkflowTranslation } from '@nocobase/plugin-workflow/client';
 
 const parseModeOptions = [
   { value: 'jsonPath', label: 'JSONPath' },
@@ -12,7 +11,6 @@ const parseModeOptions = [
 
 export const JsonResponseInstruction = () => {
   const { t } = useTranslation();
-  const { t: wt } = useWorkflowTranslation();
   const form = useForm();
 
   return (

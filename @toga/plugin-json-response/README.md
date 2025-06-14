@@ -16,7 +16,7 @@ This plugin adds a workflow node to parse JSON data returned from HTTP requests 
 
 1. Navigate to the plugin management page in your NocoBase application
 2. Click "Add & Update" button
-3. Install "@nocobase/plugin-json-response" plugin
+3. Install "@toga/plugin-json-response" plugin
 4. Enable the plugin
 
 ### Workflow Node Configuration

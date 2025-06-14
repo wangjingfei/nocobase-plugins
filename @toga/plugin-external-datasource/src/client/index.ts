@@ -15,11 +15,11 @@ export class ExternalDataSourceClientPlugin extends Plugin {
     });
 
     // 添加菜单项到设置页面
-    this.app.pluginSettingsManager.add('external-datasource', {
+    this.app.pluginSettingsManager.add('@toga/plugin-external-datasource', {
       title: '外部数据源',
       icon: 'DatabaseOutlined',
       Component: ExternalDataSourceManager,
-      aclSnippet: 'pm.external-datasource.configuration',
+      aclSnippet: 'pm.@toga/plugin-external-datasource.configuration',
     });
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@nocobase/plugin-json-response",
+  "name": "@toga/plugin-json-response",
   "version": "0.1.0",
   "description": "Plugin for processing JSON response data from HTTP requests in NocoBase workflow",
   "license": "AGPL-3.0",
@@ -14,15 +14,15 @@
     "jsonpath": "^1.1.1"
   },
   "devDependencies": {
-    "@nocobase/client": "1.6.25",
-    "@nocobase/server": "1.6.25",
-    "@nocobase/test": "1.6.25",
+    "@nocobase/client": "1.7.5",
+    "@nocobase/server": "1.7.5",
+    "@nocobase/test": "1.7.5",
     "@types/jsonpath": "^0.2.2"
   },
   "peerDependencies": {
-    "@nocobase/client": "1.6.25",
-    "@nocobase/server": "1.6.25",
-    "@nocobase/plugin-workflow": "1.6.25"
+    "@nocobase/client": "1.7.5",
+    "@nocobase/server": "1.7.5",
+    "@nocobase/plugin-workflow": "1.7.5"
   },
   "scripts": {
     "build": "tsc"
