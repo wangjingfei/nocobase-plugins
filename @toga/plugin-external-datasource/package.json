@@ -1,33 +1,29 @@
 {
-  "name": "@nocobase/plugin-external-datasource",
+  "name": "plugin-external-datasource",
   "version": "0.1.0",
-  "description": "Plugin for connecting external data sources like MySQL, PostgreSQL in NocoBase",
-  "license": "AGPL-3.0",
-  "main": "./lib/server/index.js",
-  "files": [
-    "lib",
-    "src",
-    "README.md",
-    "README.zh-CN.md"
-  ],
-  "dependencies": {
-    "mysql2": "^2.3.3",
-    "pg": "^8.11.0",
-    "sequelize": "^6.32.0",
-    "dotenv": "^16.0.3"
+  "main": "dist/server/index.js",
+  "displayName": "External Data Source",
+  "displayName.zh-CN": "外部数据源",
+  "description": "Connect and manage external data sources, including MySQL, PostgreSQL databases and REST APIs, with data synchronization capabilities.",
+  "description.zh-CN": "连接和管理外部数据源，包括 MySQL、PostgreSQL 数据库和 REST API，支持数据同步功能。",
+  "peerDependencies": {
+    "@nocobase/client": ">=0.21.0",
+    "@nocobase/server": ">=0.21.0",
+    "@nocobase/test": ">=0.21.0"
   },
   "devDependencies": {
-    "@nocobase/client": "1.6.25",
-    "@nocobase/server": "1.6.25",
-    "@nocobase/test": "1.6.25",
-    "@types/mysql": "^2.15.21",
-    "@types/pg": "^8.6.6"
+    "@types/react": "^18.0.0",
+    "@types/node": "^18.0.0",
+    "typescript": "^4.9.0"
   },
-  "peerDependencies": {
-    "@nocobase/client": "1.6.25",
-    "@nocobase/server": "1.6.25"
-  },
-  "scripts": {
-    "build": "tsc"
-  }
-} 
+  "keywords": [
+    "Data model tools",
+    "External database",
+    "MySQL",
+    "PostgreSQL", 
+    "REST API",
+    "Data synchronization",
+    "Data integration"
+  ],
+  "license": "Apache-2.0"
+}

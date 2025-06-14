@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/ubuntu/toga-crm/packages/plugins/external-datasource/storage/logs/main/.324cd127ae20124f50ca4c5910aeea779994c64d-audit.json",
+    "files": [
+        {
+            "date": 1749914896607,
+            "name": "/home/ubuntu/toga-crm/packages/plugins/external-datasource/storage/logs/main/system_2025-06-14.log",
+            "hash": "4026453f9ba8d7b613a96c9e3465f0b305e95c641e02e96040d9b462b7df7e47"
+        }
+    ],
+    "hashType": "sha256"
+}

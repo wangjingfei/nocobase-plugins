@@ -4,38 +4,39 @@ import { useAPIClient } from '@nocobase/client';
 interface DataSourceContextType {
   dataSources: any[];
   loading: boolean;
-  refresh: () => void;
+  refresh: () => Promise<void>;
 }
 
 const DataSourceContext = createContext<DataSourceContextType>({
   dataSources: [],
   loading: false,
-  refresh: () => {},
+  refresh: async () => {},
 });
 
-export const useDatasources = () => useContext(DataSourceContext);
+export const useDataSource = () => useContext(DataSourceContext);
 
-export const DatasourceProvider: React.FC<{
-  children?: React.ReactNode;
-}> = ({ children }) => {
+export const DataSourceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const api = useAPIClient();
-  const [dataSources, setDataSources] = useState<any[]>([]);
+  const [dataSources, setDataSources] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchDataSources = async () => {
+  const loadDataSources = async () => {
     setLoading(true);
     try {
-      const response = await api.resource('external-datasources').list();
-      setDataSources(response.data?.data || []);
+      const response = await api.request({
+        url: 'dataSources',
+        method: 'get',
+      });
+      setDataSources(response.data);
     } catch (error) {
-      console.error('Failed to fetch datasources:', error);
+      console.error('Failed to load data sources:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchDataSources();
+    loadDataSources();
   }, []);
 
   return (
@@ -43,7 +44,7 @@ export const DatasourceProvider: React.FC<{
       value={{
         dataSources,
         loading,
-        refresh: fetchDataSources,
+        refresh: loadDataSources,
       }}
     >
       {children}

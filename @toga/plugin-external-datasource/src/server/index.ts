@@ -1,108 +1,152 @@
 import { Plugin } from '@nocobase/server';
-import { DataSourceManager } from './DataSourceManager';
-import { DatasourceController } from './controllers/DatasourceController';
-import { registerDataSourceActions } from './actions';
+import { DataSourceManager } from './data-source-manager';
+import { SyncManager } from './sync/sync-manager';
 
-export class PluginExternalDatasourceServer extends Plugin {
+export class ExternalDataSourcePlugin extends Plugin {
   dataSourceManager: DataSourceManager;
+  syncManager: SyncManager;
 
-  async load() {
-    this.app.on('afterInstall', async () => {
-      // 插件安装后的处理逻辑
-    });
-
-    // 初始化数据源管理器
-    this.dataSourceManager = new DataSourceManager({
-      app: this.app
-    });
-
-    // 注册路由
-    this.app.resourcer.define({
-      name: 'external-datasources',
-      actions: {
-        ...registerDataSourceActions(this.dataSourceManager),
-      }
-    });
-
-    // 注册控制器
-    this.app.resourcer.registerAction('external-datasources', 'test', {
-      resource: 'external-datasources',
-      handler: DatasourceController.test,
-    });
-
-    // 加载已配置的数据源
-    await this.dataSourceManager.loadAllDataSources();
+  getName(): string {
+    return 'external-datasource';
   }
 
-  async install() {
-    // 创建必要的表和初始数据
-    const collection = this.db.collection({
-      name: 'external_datasources',
+  async afterAdd() {}
+
+  async beforeLoad() {}
+
+  async load() {
+    // 定义数据源配置的 collection
+    this.defineCollections();
+    
+    // 初始化数据源管理器
+    this.dataSourceManager = new DataSourceManager(this);
+    await this.dataSourceManager.init();
+
+    // 初始化同步管理器
+    this.syncManager = new SyncManager(this, this.dataSourceManager);
+    await this.syncManager.init();
+
+    // 注册 API 路由
+    this.registerRoutes();
+  }
+
+  async install() {}
+
+  async afterEnable() {}
+
+  async afterDisable() {}
+
+  async remove() {}
+
+  private defineCollections() {
+    // 定义外部数据源配置的 collection
+    this.db.collection({
+      name: 'externalDataSources',
       fields: [
         {
           type: 'string',
           name: 'name',
-          description: '数据源名称',
-          required: true,
+          unique: true,
         },
         {
-          type: 'string',
+          type: 'string', 
           name: 'type',
-          description: '数据源类型',
-          required: true,
-        },
-        {
-          type: 'string',
-          name: 'host',
-          description: '主机地址',
-          required: true,
-        },
-        {
-          type: 'integer',
-          name: 'port',
-          description: '端口',
-          required: true,
-        },
-        {
-          type: 'string',
-          name: 'username',
-          description: '用户名',
-          required: true,
-        },
-        {
-          type: 'password',
-          name: 'password',
-          description: '密码',
-          required: true,
-        },
-        {
-          type: 'string',
-          name: 'database',
-          description: '数据库名称',
-          required: true,
         },
         {
           type: 'json',
-          name: 'options',
-          description: '连接选项',
+          name: 'config',
         },
         {
           type: 'boolean',
           name: 'enabled',
-          description: '是否启用',
           defaultValue: true,
-        }
-      ]
+        },
+        {
+          type: 'date',
+          name: 'lastSyncTime',
+        },
+      ],
     });
-
-    await collection.sync();
   }
 
-  async remove() {
-    // 移除插件时的清理操作
-    const collection = this.db.collection('external_datasources');
-    await collection.drop();
+  private registerRoutes() {
+    const plugin = this;
+    
+    // 数据源管理 API
+    this.app.resource({
+      name: 'externalDataSources',
+      actions: {
+        async list(ctx) {
+          const dataSources = plugin.dataSourceManager.getAllDataSources();
+          ctx.body = dataSources.map(ds => ds.getConfig());
+        },
+        async create(ctx) {
+          const dataSource = await plugin.dataSourceManager.addDataSource(ctx.request.body);
+          ctx.body = dataSource.getConfig();
+        },
+        async update(ctx) {
+          const { id } = ctx.params;
+          const dataSource = plugin.dataSourceManager.getDataSource(id);
+          if (!dataSource) {
+            ctx.throw(404, '数据源不存在');
+            return;
+          }
+          // TODO: 实现更新逻辑
+          ctx.body = dataSource.getConfig();
+        },
+        async destroy(ctx) {
+          const { id } = ctx.params;
+          await plugin.dataSourceManager.removeDataSource(id);
+          ctx.body = { success: true };
+        },
+        async test(ctx) {
+          const { id } = ctx.params;
+          const dataSource = plugin.dataSourceManager.getDataSource(id);
+          if (!dataSource) {
+            ctx.throw(404, '数据源不存在');
+            return;
+          }
+          const result = await dataSource.test();
+          ctx.body = { success: result };
+        },
+      },
+    });
+
+    // 同步任务管理 API
+    this.app.resource({
+      name: 'syncTasks',
+      actions: {
+        async list(ctx) {
+          const tasks = plugin.syncManager.getAllTasks();
+          ctx.body = tasks;
+        },
+        async create(ctx) {
+          const task = await plugin.syncManager.createTask(ctx.request.body);
+          ctx.body = task;
+        },
+        async update(ctx) {
+          const { id } = ctx.params;
+          const task = await plugin.syncManager.updateTask(id, ctx.request.body);
+          ctx.body = task;
+        },
+        async destroy(ctx) {
+          const { id } = ctx.params;
+          await plugin.syncManager.deleteTask(id);
+          ctx.body = { success: true };
+        },
+        async run(ctx) {
+          const { id } = ctx.params;
+          const result = await plugin.syncManager.runTask(id);
+          ctx.body = result;
+        },
+        async status(ctx) {
+          const { id } = ctx.params;
+          const status = plugin.syncManager.getTaskStatus(id);
+          ctx.body = { status };
+        },
+      },
+    });
   }
 }
 
-export default PluginExternalDatasourceServer; 
+export default ExternalDataSourcePlugin;
